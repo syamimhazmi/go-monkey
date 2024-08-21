@@ -23,10 +23,10 @@ const (
 	COMMA     = ","
 	SEMICOLON = ";"
 
-	LPAREN  = "("
-	RPARENT = ")"
-	LBRACE  = "{"
-	RBRACE  = "}"
+	LPAREN = "("
+	RPAREN = ")"
+	LBRACE = "{"
+	RBRACE = "}"
 
 	// keywords
 	FUNCTION = "FUNCTION"
