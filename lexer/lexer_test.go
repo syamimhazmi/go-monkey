@@ -27,7 +27,7 @@ func TestNextToken(t *testing.T) {
 		parseInput(input, tests, t)
 	})
 
-	t.Run("test on identifiers and function", func(t *testing.T) {
+	t.Run("test on identifiers, function, symbol", func(t *testing.T) {
 		input := `let five = 5;
         let ten = 10;
 
@@ -36,6 +36,10 @@ func TestNextToken(t *testing.T) {
         };
 
         let result = add(five, ten);
+
+        !-/*5;
+
+        5 < 10 > 5;
         `
 
 		tests := []struct {
@@ -77,6 +81,18 @@ func TestNextToken(t *testing.T) {
 			{token.COMMA, ","},
 			{token.IDENT, "ten"},
 			{token.RPAREN, ")"},
+			{token.SEMICOLON, ";"},
+			{token.BANG, "!"},
+			{token.MINUS, "-"},
+			{token.SLASH, "/"},
+			{token.ASTERISK, "*"},
+			{token.INT, "5"},
+			{token.SEMICOLON, ";"},
+			{token.INT, "5"},
+			{token.LT, "<"},
+			{token.INT, "10"},
+			{token.GT, ">"},
+			{token.INT, "5"},
 			{token.SEMICOLON, ";"},
 			{token.EOF, ""},
 		}
