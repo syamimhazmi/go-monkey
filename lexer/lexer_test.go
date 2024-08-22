@@ -27,7 +27,7 @@ func TestNextToken(t *testing.T) {
 		parseInput(input, tests, t)
 	})
 
-	t.Run("test on identifiers, function, symbol", func(t *testing.T) {
+	t.Run("test on identifiers, function, symbol, if else and boolean", func(t *testing.T) {
 		input := `let five = 5;
         let ten = 10;
 
