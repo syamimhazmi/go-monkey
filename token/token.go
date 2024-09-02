@@ -2,20 +2,15 @@ package token
 
 type TokenType string
 
-type Token struct {
-	Type    TokenType
-	Literal string
-}
-
 const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
-	// identifier + literals
-	IDENT = "IDENT" // add, foobar, x, y...
-	INT   = "INT"
+	// Identifiers + literals
+	IDENT = "IDENT" // add, foobar, x, y, ...
+	INT   = "INT"   // 1343456
 
-	// operators
+	// Operators
 	ASSIGN   = "="
 	PLUS     = "+"
 	MINUS    = "-"
@@ -23,13 +18,13 @@ const (
 	ASTERISK = "*"
 	SLASH    = "/"
 
-	// comparison
-	LT     = "<"
-	GT     = ">"
+	LT = "<"
+	GT = ">"
+
 	EQ     = "=="
 	NOT_EQ = "!="
 
-	// delimeters
+	// Delimiters
 	COMMA     = ","
 	SEMICOLON = ";"
 
@@ -38,7 +33,7 @@ const (
 	LBRACE = "{"
 	RBRACE = "}"
 
-	// keywords
+	// Keywords
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
 	TRUE     = "TRUE"
@@ -47,6 +42,11 @@ const (
 	ELSE     = "ELSE"
 	RETURN   = "RETURN"
 )
+
+type Token struct {
+	Type    TokenType
+	Literal string
+}
 
 var keywords = map[string]TokenType{
 	"fn":     FUNCTION,
@@ -59,8 +59,8 @@ var keywords = map[string]TokenType{
 }
 
 func LookupIdentifier(identifier string) TokenType {
-	if tok, ok := keywords[identifier]; ok {
-		return tok
+	if token, ok := keywords[identifier]; ok {
+		return token
 	}
 
 	return IDENT
