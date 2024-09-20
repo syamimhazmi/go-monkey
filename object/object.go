@@ -25,13 +25,18 @@ const (
 	HASH_OBJ         = "HASH"
 )
 
-type Object interface {
-	Type() ObjectType
-	Inspect() string
+type HashKey struct {
+	Type  ObjectType
+	Value uint64
 }
 
 type Hashable interface {
 	HashKey() HashKey
+}
+
+type Object interface {
+	Type() ObjectType
+	Inspect() string
 }
 
 type Integer struct {
@@ -126,11 +131,6 @@ func (ao *Array) Inspect() string {
 	return out.String()
 }
 
-type HashKey struct {
-	Type  ObjectType
-	Value uint64
-}
-
 func (b *Boolean) HashKey() HashKey {
 	var value uint64
 
@@ -163,6 +163,7 @@ type Hash struct {
 	Pairs map[HashKey]HashPair
 }
 
+func (h *Hash) Type() ObjectType { return HASH_OBJ }
 func (h *Hash) Inspect() string {
 	var out bytes.Buffer
 
