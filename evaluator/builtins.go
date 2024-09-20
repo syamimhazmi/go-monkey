@@ -93,4 +93,5 @@ var builtins = map[string]*object.Builtin{
 			return &object.Array{Elements: newElements}
 		},
 	},
+	// TODO: learn how to implement map builtin function
 }
