@@ -16,6 +16,8 @@ func New(input string) *Lexer {
 }
 
 // for the sake of simplicity, readCharacter method only support ASCII characters
+// readCharacter method init character byte based on input readPosition
+// and increase readPosition into 1(which mean check on the next character)
 func (l *Lexer) readCharacter() {
 	if l.readPosition >= len(l.input) {
 		// set current char into 0 to indicate that we are at the end of file
@@ -37,24 +39,59 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		if l.peekCharacter() == '=' {
+			tok = makeTwoCharacterToken(l, token.EQ)
+		} else {
+			tok = newToken(token.ASSIGN, l.ch)
+		}
+
 	case ';':
 		tok = newToken(token.SEMICOLON, l.ch)
+
 	case '(':
 		tok = newToken(token.LPAREN, l.ch)
+
 	case ')':
 		tok = newToken(token.RPAREN, l.ch)
+
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
+
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
+
+	case '-':
+		tok = newToken(token.MINUS, l.ch)
+
+	case '*':
+		tok = newToken(token.ASTERISK, l.ch)
+
+	case '/':
+		tok = newToken(token.SLASH, l.ch)
+
+	case '!':
+		if l.peekCharacter() == '=' {
+			tok = makeTwoCharacterToken(l, token.NOT_EQ)
+		} else {
+			tok = newToken(token.BANG, l.ch)
+		}
+
+	case '<':
+		tok = newToken(token.LT, l.ch)
+
+	case '>':
+		tok = newToken(token.GT, l.ch)
+
 	case '{':
 		tok = newToken(token.LBRACE, l.ch)
+
 	case '}':
 		tok = newToken(token.RBRACE, l.ch)
+
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
+
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifer()
@@ -91,6 +128,14 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
+func (l *Lexer) peekCharacter() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	} else {
+		return l.input[l.readPosition]
+	}
+}
+
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readCharacter()
@@ -107,4 +152,11 @@ func isLetter(ch byte) bool {
 
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func makeTwoCharacterToken(lexer *Lexer, tokenType token.TokenType) token.Token {
+	ch := lexer.ch
+	lexer.readCharacter()
+	literal := string(ch) + string(lexer.ch)
+	return token.Token{Type: tokenType, Literal: literal}
 }
