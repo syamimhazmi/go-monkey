@@ -9,7 +9,7 @@ import (
 // The base Node interface
 type Node interface {
 	TokenLiteral() string
-	String() string
+	String() string // this method for only debugging the value of struct
 }
 
 // All statement nodes implement this
@@ -118,3 +118,12 @@ func (es *ExpressionStatement) String() string {
 
 	return ""
 }
+
+type IntegerLiteral struct {
+	Token token.Token
+	Value int64
+}
+
+func (il *IntegerLiteral) expressionNode()      {}
+func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
+func (il *IntegerLiteral) String() string       { return il.Token.Literal }
